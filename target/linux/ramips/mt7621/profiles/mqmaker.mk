@@ -8,12 +8,12 @@
 define Profile/WITI
 	NAME:=MQmaker Witi Board Profile
 	PACKAGES:=\
-		-swconfig -rt2x00 \
 		ated hwnat reg gpio btnd switch ethstt uci2dat mii_mgr watchdog 8021xd eth_mac\
 		wireless-tools block-mount fstools kmod-scsi-generic \
 		kmod-usb-core kmod-usb3 kmod-usb-storage \
 		kmod-fs-vfat kmod-fs-ntfs kmod-nls-base kmod-nls-utf8 kmod-nls-cp936 \
-		kmod-nls-cp437 kmod-nls-cp850 kmod-nls-iso8859-1 kmod-nls-iso8859-15 kmod-nls-cp950
+		kmod-nls-cp437 kmod-nls-cp850 kmod-nls-iso8859-1 kmod-nls-iso8859-15 kmod-nls-cp950 \
+		kmod-mt76x2e
 endef
 
 define Profile/WITI/Description
