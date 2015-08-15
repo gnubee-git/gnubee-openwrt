@@ -30,6 +30,26 @@ ramips_setup_rt3x5x_vlans()
 	ucidef_add_switch_vlan "rt305x" "2" "$wanports 6t"
 }
 
+
+ramips_setup_witi_interfaces()
+{
+	uci batch <<EOF
+set network.lan='interface'
+set network.lan.ifname='eth0.1 eth1'
+set network.lan.force_link=1
+set network.lan.type='bridge'
+set network.lan.proto='static'
+set network.lan.ipaddr='192.168.200.1'
+set network.lan.netmask='255.255.255.0'
+set network.lan.ip6assign='60'
+EOF
+
+	ucidef_set_interface_wan "eth0.2"
+	ucidef_add_switch "switch0" "1" "1"
+	ucidef_add_switch_vlan "switch0" "1" "0 1 2 3 6t"
+	ucidef_add_switch_vlan "switch0" "2" "4 6t"
+}
+
 ramips_setup_interfaces()
 {
 	local board="$1"
@@ -198,10 +218,7 @@ ramips_setup_interfaces()
 		;;
 
 	witi)
-		ucidef_set_interfaces_lan_wan "eth0.2" "eth0.1"
-		ucidef_add_switch "switch0" "1" "1"
-		ucidef_add_switch_vlan "switch0" "2" "0 1 2 3 6t"
-		ucidef_add_switch_vlan "switch0" "1" "4 6t"
+		ramips_setup_witi_interfaces
 		;;
 	*)
 		RT3X5X=`cat /proc/cpuinfo | egrep "(RT3.5|RT5350)"`
