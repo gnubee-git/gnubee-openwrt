@@ -13,7 +13,7 @@ define Profile/WITI
 		kmod-usb-core kmod-usb3 kmod-usb-storage \
 		kmod-fs-vfat kmod-fs-ntfs kmod-nls-base kmod-nls-utf8 kmod-nls-cp936 \
 		kmod-nls-cp437 kmod-nls-cp850 kmod-nls-iso8859-1 kmod-nls-iso8859-15 kmod-nls-cp950 \
-		kmod-mt76x2e
+		kmod-mt76x2e kmod-ata-core kmod-ata-ahci
 endef
 
 define Profile/WITI/Description
