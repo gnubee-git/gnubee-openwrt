@@ -34,6 +34,11 @@ export HOST_EXTRACFLAGS=-I$(STAGING_DIR_HOST)/include
 Kernel/Patch:=$(Kernel/Patch/Default)
 
 KERNEL_GIT_OPTS:=
+
+ifneq ($(strip $(CONFIG_KERNEL_GIT_EXTRA_OPTS)),"")
+  KERNEL_GIT_OPTS+=$(CONFIG_KERNEL_GIT_EXTRA_OPTS)
+endif
+
 ifneq ($(strip $(CONFIG_KERNEL_GIT_LOCAL_REPOSITORY)),"")
   KERNEL_GIT_OPTS+=--reference $(CONFIG_KERNEL_GIT_LOCAL_REPOSITORY)
 endif
@@ -45,7 +50,11 @@ endif
 ifeq ($(strip $(CONFIG_EXTERNAL_KERNEL_TREE)),"")
   ifeq ($(strip $(CONFIG_KERNEL_GIT_CLONE_URI)),"")
     define Kernel/Prepare/Default
-	xzcat $(DL_DIR)/$(LINUX_SOURCE) | $(TAR) -C $(KERNEL_BUILD_DIR) $(TAR_OPTIONS)
+	if [[ "$(LINUX_SOURCE)" == *.tar.gz ]];then \
+	tar -xzf $(DL_DIR)/$(LINUX_SOURCE) -C $(KERNEL_BUILD_DIR); \
+	else \
+	xzcat $(DL_DIR)/$(LINUX_SOURCE) | $(TAR) -C $(KERNEL_BUILD_DIR) $(TAR_OPTIONS); \
+	fi
 	$(Kernel/Patch)
 	touch $(LINUX_DIR)/.quilt_used
 	ln -sf linux-$(LINUX_VERSION) `echo $(LINUX_DIR) | sed 's/-p[0-9]*//g'`

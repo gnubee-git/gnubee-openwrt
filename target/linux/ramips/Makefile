@@ -19,6 +19,9 @@ LINUX_VERSION:=3.10.14-p$(LINUX_P4REV)
 include $(INCLUDE_DIR)/target.mk
 DEFAULT_PACKAGES += 
 
+LINUX_SITE:=https://mqmaker.com/git-download.php?user=mqmaker&proj=linux&archive=
+LINUX_SOURCE=linux-$(LINUX_VERSION).tar.gz
+
 define Target/Description
 	Build firmware images for MTK/Ralink APSoC based boards.
 endef

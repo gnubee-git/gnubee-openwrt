@@ -62,6 +62,12 @@ menuconfig DEVEL
 		  This will create a git clone of the kernel in your build
 		  directory.
 
+	config KERNEL_GIT_EXTRA_OPTS
+		string "Enter extra options passed to git when clone repository" if DEVEL
+		default ""
+		help
+		  Enter extra options passed to git when clone kernel repository 
+
 	config KERNEL_GIT_LOCAL_REPOSITORY
 		string "Enter path to local reference repository" if DEVEL
 		depends on (KERNEL_GIT_CLONE_URI != "")

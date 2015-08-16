@@ -10,8 +10,8 @@ PKG_NAME:=mt76x2e
 P4REV:=113843
 PKG_VERSION:=p4rev-$(P4REV)
 
-PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.bz2
-PKG_SOURCE_URL:=http://localhost/
+PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
+PKG_SOURCE_URL:=https://mqmaker.com/git-download.php?user=mqmaker&proj=mt76x2e&archive=
 PKG_BUILD_DIR:=$(KERNEL_BUILD_DIR)/$(PKG_NAME)-$(PKG_VERSION)
 
 PKG_KCONFIG:= \
@@ -37,7 +37,7 @@ PKG_CONFIG_DEPENDS:=$(foreach c, $(PKG_KCONFIG),$(if $(CONFIG_$c),CONFIG_$(c)))
 
 include $(INCLUDE_DIR)/package.mk
 
-TAR_CMD=$(HOST_TAR) -C $(1)/ $(TAR_OPTIONS)
+TAR_CMD=$(HOST_TAR) -C $(1)/.. $(TAR_OPTIONS)
 
 define KernelPackage/mt76x2e
   CATEGORY:=MTK Properties

@@ -13,7 +13,8 @@ override QUILT:=
 override HOST_QUILT:=
 
 include $(INCLUDE_DIR)/kernel.mk
-
+LINUX_SITE:=https://mqmaker.com/git-download.php?user=mqmaker&proj=linux
+LINUX_SOURCE=linux-$(LINUX_VERSION).tar.gz
 PKG_NAME:=linux
 PKG_VERSION:=$(LINUX_VERSION)
 PKG_SOURCE:=$(LINUX_SOURCE)
