@@ -20,6 +20,16 @@ ifneq ($(CONFIG_SJLJ_EXCEPTIONS),)
 	--enable-sjlj-exceptions
 endif
 
+define FixToolchainGcc5
+	# Fixup links if using eglibc
+	$(if $(CONFIG_USE_EGLIBC), $(if $(CONFIG_GCC_VERSION_5), (\
+      mkdir -p $(GCC_BUILD_DIR)/gotools; \
+      ln -sf $(GCC_BUILD_DIR)/../$(CONFIG_LIBC)-dev/lib/crti.o $(GCC_BUILD_DIR)/gotools/crti.o; \
+      ln -sf $(GCC_BUILD_DIR)/../$(CONFIG_LIBC)-dev/lib/crt1.o $(GCC_BUILD_DIR)/gotools/crt1.o; \
+      ln -sf $(GCC_BUILD_DIR)/../$(CONFIG_LIBC)-dev/lib/crtn.o $(GCC_BUILD_DIR)/gotools/crtn.o; \
+    )))
+endef
+
 define CleanupToolchain
 	$(INSTALL_DIR) $(TOOLCHAIN_DIR)/$(REAL_GNU_TARGET_NAME)
 	# Important!  Required for limits.h to be fixed.
@@ -39,6 +49,7 @@ define Host/Configure
 endef
 
 define Host/Compile
+    $(FixToolchainGcc5)
 	+$(GCC_MAKE) $(HOST_JOBS) -C $(GCC_BUILD_DIR) all
 endef
 
