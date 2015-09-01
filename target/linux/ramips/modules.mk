@@ -67,7 +67,7 @@ endef
 
 define KernelPackage/hw_nat/install
 	$(INSTALL_DIR) $(1)/lib/modules/ralink/
-	mv $(1)/lib/modules/3.10.14/hw_nat.ko $(1)/lib/modules/ralink/
+	mv $(1)/lib/modules/$(LINUX_UNAME_VERSION)/hw_nat.ko $(1)/lib/modules/ralink/
 endef
 
 $(eval $(call KernelPackage,hw_nat))
@@ -130,8 +130,8 @@ define KernelPackage/hw_kwdg
   SUBMENU:=Drivers
   TITLE:=Kernel Mode Watchdog
   KCONFIG:=CONFIG_RALINK_TIMER CONFIG_RALINK_TIMER_DFS=y CONFIG_RALINK_TIMER_WDG CONFIG_RALINK_WDG_TIMER=10 CONFIG_RALINK_WDG_REFRESH_INTERVAL=4 CONFIG_RALINK_TIMER_WDG_RESET_OUTPUT=y
-  FILES:=$(LINUX_DIR)/arch/mips/ralink/ralink_wdt.ko
-  AUTOLOAD:=$(call AutoProbe,ralink_wdt)
+  FILES:=$(LINUX_DIR)/arch/mips/ralink/ralink_kwdt.ko
+  AUTOLOAD:=$(call AutoProbe,ralink_kwdt)
 endef
 
 $(eval $(call KernelPackage,hw_kwdg))
