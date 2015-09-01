@@ -66,6 +66,8 @@ endef
 define Package/libnvram/install
 	$(INSTALL_DIR) $(1)/usr/lib
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/*.so $(1)/usr/lib
+
+	ln -s libnvram.so $(1)/usr/lib/libnvram.so.0
 endef
 
 
