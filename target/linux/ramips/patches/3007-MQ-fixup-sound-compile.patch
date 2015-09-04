@@ -1,0 +1,25 @@
+--- a/drivers/base/regmap/Makefile
++++ b/drivers/base/regmap/Makefile
+@@ -1,6 +1,8 @@
+-obj-$(CONFIG_REGMAP) += regmap.o regcache.o
+-obj-$(CONFIG_REGMAP) += regcache-rbtree.o regcache-lzo.o regcache-flat.o
+-obj-$(CONFIG_DEBUG_FS) += regmap-debugfs.o
++regmap-core-objs = regmap.o regcache.o regcache-rbtree.o regcache-lzo.o regcache-flat.o
++ifdef CONFIG_DEBUG_FS
++regmap-core-objs += regmap-debugfs.o
++endif
++obj-$(CONFIG_REGMAP) += regmap-core.o
+ obj-$(CONFIG_REGMAP_I2C) += regmap-i2c.o
+ obj-$(CONFIG_REGMAP_SPI) += regmap-spi.o
+ obj-$(CONFIG_REGMAP_MMIO) += regmap-mmio.o
+--- a/include/sound/pcm.h
++++ b/include/sound/pcm.h
+@@ -126,6 +126,8 @@ struct snd_pcm_ops {
+ #define SNDRV_PCM_RATE_96000		(1<<10)		/* 96000Hz */
+ #define SNDRV_PCM_RATE_176400		(1<<11)		/* 176400Hz */
+ #define SNDRV_PCM_RATE_192000		(1<<12)		/* 192000Hz */
++#define SNDRV_PCM_RATE_12000		(1<<13)		/* 12000Hz */
++#define SNDRV_PCM_RATE_24000		(1<<14)		/* 24000Hz */
+ 
+ #define SNDRV_PCM_RATE_CONTINUOUS	(1<<30)		/* continuous range */
+ #define SNDRV_PCM_RATE_KNOT		(1<<31)		/* supports more non-continuos rates */
