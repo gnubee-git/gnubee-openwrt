@@ -19,7 +19,9 @@ LINUX_VERSION:=3.10.14-p$(LINUX_P4REV)
 include $(INCLUDE_DIR)/target.mk
 DEFAULT_PACKAGES += 
 
+ifeq ($(call qstrip,$(CONFIG_EXTERNAL_KERNEL_TREE))$(call qstrip,$(CONFIG_KERNEL_GIT_CLONE_URI)),)
 LINUX_SITE:=https://mqmaker.com/git-download.php?user=mqmaker&proj=linux&archive=
+endif
 LINUX_SOURCE=linux-$(LINUX_VERSION).tar.gz
 
 define Target/Description
