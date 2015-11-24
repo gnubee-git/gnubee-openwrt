@@ -2,7 +2,7 @@
 +++ b/arch/mips/kernel/setup.c
 @@ -646,6 +646,7 @@ static void __init arch_mem_init(char **
  	}
-
+ 
  	bootmem_init();
 +
  #ifdef CONFIG_PROC_VMCORE
@@ -16,18 +16,18 @@
   */
 -#define prom_envp(index) ((char *)(((int *)(int)_prom_envp)[(index)]))
 +#define prom_envp(index) ((char *)(((char **)_prom_envp)[(index)]))
-
+ 
  int init_debug = 0;
-
+ 
 @@ -87,16 +87,13 @@ char *prom_getenv(char *envname)
  	 * workarounds, if we are running in 64-bit mode.
  	 */
  	int i, index=0;
 -	// Dennis Lee +
 -	return NULL;
--	//
+-	// 
  	i = strlen(envname);
-
+ 
  	while (prom_envp(index)) {
  		if(strncmp(envname, prom_envp(index), i) == 0) {
 -			return(prom_envp(index+1));
@@ -36,27 +36,27 @@
 -		index += 2;
 +		index++;
  	}
-
+ 
  	return NULL;
 @@ -768,11 +765,9 @@ __init void prom_init(void)
  	int result __maybe_unused;
  #endif
-
+ 
 -#ifdef CONFIG_UBOOT_CMDLINE
  	prom_argc = (int)fw_arg0;
  	_prom_argv = (int *)fw_arg1;
  	_prom_envp = (int *)fw_arg2;
 -#endif
-
+ 
  	prom_init_cmdline();
-
+ 
 @@ -783,17 +778,12 @@ __init void prom_init(void)
  	serial_init(57600);
-
+ 
  	prom_init_serial_port();  /* Needed for Serial Console */
 +	prom_setup_printf(prom_get_ttysnum());
 +	prom_printf("\nLINUX started...\n");
-
+ 
  	prom_meminit();
  	prom_usbinit();		/* USB power saving*/
  	prom_pcieinit();	/* PCIe power saving*/
@@ -67,9 +67,9 @@
 -#elif defined(CONFIG_RT2880_ASIC) || defined(CONFIG_RT3052_ASIC) || defined(CONFIG_RT3352_ASIC) || defined (CONFIG_RT2883_ASIC) || defined (CONFIG_RT3883_ASIC) || defined (CONFIG_RT5350_ASIC) || defined (CONFIG_RT6855_ASIC) || defined (CONFIG_MT7620_ASIC) || defined (CONFIG_MT7621_ASIC) || defined (CONFIG_MT7628_ASIC)
 -	prom_printf("\n THIS IS ASIC\n");
 -#endif
-
+ 
  #if defined (CONFIG_IRQ_GIC)
-
+ 
 --- a/arch/mips/ralink/memory.c
 +++ b/arch/mips/ralink/memory.c
 @@ -43,9 +43,10 @@
@@ -77,11 +77,11 @@
  #include <asm/bootinfo.h>
  #include <asm/page.h>
 +#include <linux/sizes.h>
-
+ 
  #include <asm/mach-ralink/prom.h>
 -//#define DEBUG
 +#undef DEBUG
-
+ 
  enum surfboard_memtypes {
  	surfboard_dontuse,
 @@ -98,18 +99,17 @@ struct prom_pmemblock * __init prom_getm
@@ -91,7 +91,7 @@
 -		ramsize = simple_strtol(env_str, NULL, 0);
 +		ramsize = memparse(env_str, NULL);
  	}
-
+ 
  	env_str = prom_getenv("rambase");
  	if (!env_str) {
  #if defined(CONFIG_RT2880_ASIC) || defined(CONFIG_RT2880_FPGA)
@@ -100,7 +100,7 @@
  #else
 -		prom_printf("rambase not set, set to default (0x00000000)\n");
  		rambase = 0x00000000;
- #endif
+ #endif 
 +		prom_printf("rambase not set, set to default (0x%08x)\n", rambase);
  	} else {
  #ifdef DEBUG
@@ -108,7 +108,7 @@
 @@ -123,9 +123,17 @@ struct prom_pmemblock * __init prom_getm
  	mdesc[0].base = rambase;
  	mdesc[0].size = ramsize;
-
+ 
 +#if defined(CONFIG_MT7621_ASIC)
 +	if (ramsize > 448 * SZ_1M){
 +		mdesc[0].size = 448 * SZ_1M;
@@ -129,7 +129,7 @@
  	}
  }
 -#endif
-
+ 
  void __init prom_meminit(void)
  {
 -	//struct prom_pmemblock *p;
@@ -137,9 +137,9 @@
  #ifdef DEBUG
  	struct prom_pmemblock *psave;
  #endif
-
--	//printk("ram start= %x, ram end= %x\n",rt2880_res_ram.start, rt2880_res_ram.end);
--	//printk("size = %x\n",rt2880_res_ram.end - rt2880_res_ram.start);
+ 
+-	//printk("ram start= %x, ram end= %x\n",rt2880_res_ram.start, rt2880_res_ram.end); 
+-	//printk("size = %x\n",rt2880_res_ram.end - rt2880_res_ram.start); 
 - 	//add_memory_region(0x0a000000, rt2880_res_ram.end - rt2880_res_ram.start, BOOT_MEM_RAM);
 -#if defined(CONFIG_RT2880_ASIC) || defined(CONFIG_RT2880_FPGA)
 - 	add_memory_region(0x08000000, RAM_SIZE, BOOT_MEM_RAM);
@@ -153,7 +153,7 @@
 -#else
 -        add_memory_region(0x00000000, RAM_SIZE, BOOT_MEM_RAM);
 -#endif
-
+ 	
 -	//p = prom_getmdesc();
 +	p = prom_getmdesc();
  #ifdef DEBUG
@@ -161,7 +161,7 @@
  	psave = p;	/* Save p */
 @@ -176,7 +168,6 @@ void __init prom_meminit(void)
  	p = psave;	/* Restore p */
-
+ 
  #endif
 -#if 0
  	while (p->size) {
@@ -173,5 +173,5 @@
  	}
 -#endif
  }
-
+ 
  void __init prom_free_prom_memory(void)
