@@ -263,7 +263,7 @@ config MT76X2E_NEW_RATE_ADAPT_SUPPORT
 
 config MT76X2E_AGS_SUPPORT
 	bool "Adaptive Group Switching"
-	depends MT76X2E_NEW_RATE_ADAPT_SUPPORT
+	depends on MT76X2E_NEW_RATE_ADAPT_SUPPORT
 	default n
 
 config MT76X2E_IDS_SUPPORT

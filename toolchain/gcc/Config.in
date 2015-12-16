@@ -28,12 +28,12 @@ choice
 	config GCC_USE_VERSION_5_1_0
 		select GCC_VERSION_5_1_0
 		depends on BINUTILS_VERSION_LINARO
-		bool "gcc 5.1.0""
+		bool "gcc 5.1.0"
 
 	config GCC_USE_VERSION_5_2_0
 		select GCC_VERSION_5_2_0
 		depends on BINUTILS_VERSION_LINARO
-		bool "gcc 5.2.0""
+		bool "gcc 5.2.0"
 
 endchoice
 
