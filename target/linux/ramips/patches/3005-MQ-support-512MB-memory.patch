@@ -80,16 +80,29 @@
  
  #include <asm/mach-ralink/prom.h>
 -//#define DEBUG
-+#undef DEBUG
++#define DEBUG
  
  enum surfboard_memtypes {
  	surfboard_dontuse,
-@@ -98,18 +99,17 @@ struct prom_pmemblock * __init prom_getm
+@@ -91,6 +92,10 @@ struct prom_pmemblock * __init prom_getm
+ 	unsigned int ramsize, rambase;
+ 
+ 	env_str = prom_getenv("ramsize");
++
++	if (!env_str)
++		env_str = prom_getenv("memsize");
++
+ 	if (!env_str) {
+ 		ramsize = CONFIG_RALINK_RAM_SIZE * 1024 * 1024;
+ 		prom_printf("ramsize = %d MBytes\n", CONFIG_RALINK_RAM_SIZE );
+@@ -98,18 +103,19 @@ struct prom_pmemblock * __init prom_getm
  #ifdef DEBUG
  		prom_printf("ramsize = %s\n", env_str);
  #endif
 -		ramsize = simple_strtol(env_str, NULL, 0);
 +		ramsize = memparse(env_str, NULL);
++		if (ramsize < SZ_1M)
++			ramsize <<= 20;
  	}
  
  	env_str = prom_getenv("rambase");
@@ -105,7 +118,7 @@
  	} else {
  #ifdef DEBUG
  		prom_printf("rambase = %s\n", env_str);
-@@ -123,9 +123,17 @@ struct prom_pmemblock * __init prom_getm
+@@ -123,9 +129,17 @@ struct prom_pmemblock * __init prom_getm
  	mdesc[0].base = rambase;
  	mdesc[0].size = ramsize;
  
@@ -124,7 +137,7 @@
  static int __init prom_memtype_classify (unsigned int type)
  {
  	switch (type) {
-@@ -137,32 +145,16 @@ static int __init prom_memtype_classify
+@@ -137,32 +151,16 @@ static int __init prom_memtype_classify
  		return BOOT_MEM_RESERVED;
  	}
  }
@@ -159,7 +172,7 @@
  #ifdef DEBUG
  	prom_printf("MEMORY DESCRIPTOR dump:\n");
  	psave = p;	/* Save p */
-@@ -176,7 +168,6 @@ void __init prom_meminit(void)
+@@ -176,7 +174,6 @@ void __init prom_meminit(void)
  	p = psave;	/* Restore p */
  
  #endif
@@ -167,7 +180,7 @@
  	while (p->size) {
  		long type;
  		unsigned long base, size;
-@@ -187,7 +178,6 @@ void __init prom_meminit(void)
+@@ -187,7 +184,6 @@ void __init prom_meminit(void)
  		add_memory_region(base, size, type);
                  p++;
  	}
