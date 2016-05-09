@@ -19,6 +19,15 @@ ramips_board_detect() {
 	*"Witi")
 		name="witi"
 		;;
+	*"GB-N1")
+		name="gb-n1"
+		;;
+	*"GB-N2")
+		name="gb-n2"
+		;;
+	*"GB-R1")
+		name="gb-r1"
+		;;
 	*"8devices Carambola")
 		name="carambola"
 		;;

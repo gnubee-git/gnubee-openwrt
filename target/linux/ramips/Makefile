@@ -8,8 +8,8 @@ include $(TOPDIR)/rules.mk
 
 ARCH:=mipsel
 BOARD:=ramips
-BOARDNAME:=MTK/Ralink APSoC
-SUBTARGETS:=mt7620 mt7621 mt7628
+BOARDNAME:=MTK APSoC
+SUBTARGETS:=mt7621
 FEATURES:=squashfs gpio
 
 LINUX_P4PATH:=//WIFI_SOC/MP/SDK_4_3_0_0/RT288x_SDK/source
@@ -25,7 +25,7 @@ endif
 LINUX_SOURCE=linux-$(LINUX_VERSION).tar.gz
 
 define Target/Description
-	Build firmware images for MTK/Ralink APSoC based boards.
+	Build firmware images for MTK APSoC based boards.
 endef
 
 $(eval $(call BuildTarget))

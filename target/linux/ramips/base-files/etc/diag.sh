@@ -54,6 +54,9 @@ get_status_led() {
 	fonera20n)
 		status_led="fonera20n:green:power"
 		;;
+	gb-n1 | gb-n2 | gb-r1)
+		status_led="gnubee:green:status"
+		;;
 	ip2202)
 		status_led="ip2202:green:run"
 		;;
