@@ -4,11 +4,10 @@
 
 SUBTARGET:=mt7621
 BOARDNAME:=MT7621 based boards
-ARCH_PACKAGES:=ramips_24kec
+ARCH_PACKAGES:=ramips_1004kec
 FEATURES+=usb
-CPU_TYPE:=24kec
+CPU_TYPE:=1004kc
 CPU_SUBTYPE:=dsp
-
 DEFAULT_PACKAGES +=
 
 define Target/Description
