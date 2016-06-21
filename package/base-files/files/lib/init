@@ -34,6 +34,9 @@ gnubee_boot(){
    sleep 1
 
    # MT7621 GnuBee
+   vconfig add eth0 1
+   vconfig add eth0 2
+   ifconfig eth0 up
    . /lib/network/switch.sh
    config6855Esw LLLLW > /dev/null 2>&1
 

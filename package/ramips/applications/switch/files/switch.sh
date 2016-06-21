@@ -25,6 +25,9 @@ restore6855Esw()
     
     #clear mac table if vlan configuration changed
     switch clear
+
+    # Rebuild default switch config
+    config6855Esw LLLLW
 }
 
 config6855Esw()
@@ -171,10 +174,10 @@ config6855Esw()
 # work for 7620 and 7621
 setup_switch()
 {
-	config6855Esw LLLLW
+	config6855Esw LLLLW > /dev/null 2>&1
 }
 
 reset_switch()
 {
-    restore6855Esw
+    restore6855Esw > /dev/null 2>&1
 }
