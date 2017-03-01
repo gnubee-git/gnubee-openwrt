@@ -24,6 +24,7 @@ start_service() {
 		echo '/tmp/%e.%p.%s.%t.core' > /proc/sys/kernel/core_pattern
 	}
 	procd_close_instance
+        reload_service
 }
 
 reload_service() {

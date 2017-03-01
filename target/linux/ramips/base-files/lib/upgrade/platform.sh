@@ -50,9 +50,7 @@ platform_check_image() {
 	fonera20n | \
 	rt-n13u | \
 	freestation5 | \
-	gb-n1 |\
-	gb-n2 |\
-	gb-r1 |\
+	gb-pc1 |\
 	hw550-3g | \
 	hg255d | \
 	hlk-rm04 | \

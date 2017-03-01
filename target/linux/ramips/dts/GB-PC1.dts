@@ -4,7 +4,7 @@
 
 / {
 	compatible = "mediatek,mt7621-eval-board", "mediatek,mt7621-soc";
-	model = "GB-N1";
+	model = "GB-PC1";
 
 	memory@0 {
 		device_type = "memory";
@@ -26,9 +26,9 @@
 			m25p80@0 {
 				#address-cells = <1>;
 				#size-cells = <1>;
-				compatible = "jedec,spi-nor";
+				compatible = "w25q128";
 				reg = <0 0>;
-				linux,modalias = "m25p80";
+				linux,modalias = "m25p80", "mx25l12805d";
 				spi-max-frequency = <10000000>;
 
 				partition@0 {
@@ -44,7 +44,7 @@
 
 				partition@40000 {
 					label = "firmware";
-					reg = <0x50000 0x1fb0000>;
+					reg = <0x50000 0x7b0000>;
 				};
 
 			};

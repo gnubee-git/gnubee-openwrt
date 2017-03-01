@@ -1,0 +1,47 @@
+#!/bin/busybox ash
+# ALTERNATIVE PREINIT V1 - dgazineu gmail.com
+
+gnubee_pivot_root(){
+  echo "Partition GNUBEE-ROOT found. Starting..." > /dev/kmsg
+  umount /proc
+  cd /mnt/root
+  mkdir -p rom
+  pivot_root . rom
+  exec chroot . /sbin/init
+}
+
+continue_boot(){
+  echo "Partition GNUBEE-ROOT not found. Resuming recovery boot." > /dev/kmsg
+  umount /proc
+  umount /sys
+  exec /sbin/init 
+}
+
+gnubee_boot(){
+   mount -t proc none /proc
+   mount -t sysfs none /sys
+   mount -t tmpfs tmpfs /dev
+   
+   echo "/sbin/mdev" > /proc/sys/kernel/hotplug
+   mdev -s
+
+   echo -n "Waiting disk spinup and searching for partition GNUBEE-ROOT..." > /dev/kmsg
+   sleep 3
+   echo "done." > /dev/kmsg
+
+   echo "" > /proc/sys/kernel/hotplug
+
+   sleep 1
+
+   # MT7621 GnuBee
+   vconfig add eth0 1
+   vconfig add eth0 2
+   ifconfig eth0 up
+   . /lib/network/switch.sh
+   config6855Esw LLLLW > /dev/null 2>&1
+
+   mount -o ro `findfs LABEL=GNUBEE-ROOT` /mnt/root && gnubee_pivot_root || continue_boot
+
+}
+
+gnubee_boot
