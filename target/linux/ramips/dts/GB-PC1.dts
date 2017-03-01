@@ -4,7 +4,7 @@
 
 / {
 	compatible = "mediatek,mt7621-eval-board", "mediatek,mt7621-soc";
-	model = "GB-N1";
+	model = "GB-PC1";
 
 	memory@0 {
 		device_type = "memory";
@@ -93,6 +93,29 @@
 		status {
 			label = "gnubee:green:status";
 			gpios = <&gpio0 8 1>;
+		};
+	};
+
+	gpio-power {
+		compatible = "gpio-power";
+
+		26 {
+			label = "gnubee:power:gpio26";
+			gpios = <&gpio0 26 0>;
+		};
+
+		28 {
+			label = "gnube:power:gpio28";
+			gpios = <&gpio0 28 1>;
+		};
+		29 {
+			label = "gnube:power:gpio29";
+			gpios = <&gpio0 29 0>;
+		};
+
+		30 {
+			label = "gnube:power:gpio30";
+			gpios = <&gpio0 30 1>;
 		};
 	};
 
