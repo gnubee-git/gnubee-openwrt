@@ -51,6 +51,7 @@ platform_check_image() {
 	rt-n13u | \
 	freestation5 | \
 	gb-pc1 |\
+        gb-pc2 |\
 	hw550-3g | \
 	hg255d | \
 	hlk-rm04 | \

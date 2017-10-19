@@ -22,6 +22,9 @@ ramips_board_detect() {
 	*"GB-PC1")
 		name="gb-pc1"
 		;;
+	*"GB-PC2")
+                name="gb-pc2"
+                ;;
 	*"8devices Carambola")
 		name="carambola"
 		;;

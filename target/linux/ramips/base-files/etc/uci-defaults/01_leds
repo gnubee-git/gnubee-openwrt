@@ -106,7 +106,8 @@ case $board in
 		set_usb_led "fonera20n:orange:usb"
 		set_wifi_led "fonera20n:orange:wifi"
 		;;
-	gb-pc1)
+	gb-pc1|\
+	gb-pc2)
 		ucidef_set_led_default "status" "STATUS" "gnubee:green:status"
 		ucidef_set_led_default "udf" "UDF" "gnubee:green:udf"
 		;;
