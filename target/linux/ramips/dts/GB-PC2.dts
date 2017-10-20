@@ -44,7 +44,7 @@
 
 				partition@40000 {
 					label = "firmware";
-					reg = <0x50000 0x7b0000>;
+					reg = <0x50000 0x1fb0000>;
 				};
 
 			};
@@ -100,21 +100,21 @@
 		compatible = "gpio-power";
 
 		14 {
-			label = "gnubee:power:gpio26";
+			label = "gnubee:power:gpio14";
 			gpios = <&gpio0 14 0>;
 		};
 
 		15 {
-			label = "gnubee:power:gpio28";
+			label = "gnubee:power:gpio15";
 			gpios = <&gpio0 15 1>;
 		};
 		16 {
-			label = "gnubee:power:gpio29";
+			label = "gnubee:power:gpio16";
 			gpios = <&gpio0 16 0>;
 		};
 
 		17 {
-			label = "gnubee:power:gpio30";
+			label = "gnubee:power:gpio17";
 			gpios = <&gpio0 17 1>;
 		};
 	};
