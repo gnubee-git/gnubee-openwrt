@@ -40,8 +40,7 @@ gnubee_boot(){
    . /lib/network/switch.sh
    config6855Esw LLLLW > /dev/null 2>&1
 
-   mount -o ro `findfs LABEL=GNUBEE-ROOT` /mnt/root && gnubee_pivot_root || continue_boot
-
+   mount -o ro `findfs LABEL=GNUBEE-ROOT` /mnt/root && test -x /mnt/root/sbin/init && gnubee_pivot_root || continue_boot
 }
 
 gnubee_boot
