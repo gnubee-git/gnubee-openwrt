@@ -1,0 +1,11 @@
+--- a/drivers/net/raeth/raether.c
++++ b/drivers/net/raeth/raether.c
+@@ -2574,6 +2574,8 @@ void RAETH_Init_PSEUDO(pEND_DEVICE pAd,
+ 		memcpy(addr.sa_data, mac_addr01234, 5);
+ 		addr.sa_data[5] = net_random()&0xFF;
+ 	}
++	// Mac address adjust from GMAC1
++	addr.sa_data[5] = (addr.sa_data[5] + 0x02) & 0xFF;
+ 
+ 	ei_set_mac2_addr(dev, &addr);
+ 	ether_setup(dev);

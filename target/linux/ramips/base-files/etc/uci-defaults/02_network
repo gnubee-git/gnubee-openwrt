@@ -9,13 +9,15 @@ ramips_setup_gnubee_interfaces()
 {
 	uci batch <<EOF
 set network.lan='interface'
-set network.lan.ifname='eth0.1 eth1'
+set network.lan.ifname='eth0.1'
 set network.lan.force_link=1
-set network.lan.type='bridge'
 set network.lan.proto='static'
 set network.lan.ipaddr='192.168.1.1'
 set network.lan.netmask='255.255.255.0'
 set network.lan.ip6assign='60'
+set network.eth1='interface'
+set network.eth1.ifname='eth1'
+set network.eth1.proto='dhcp'
 EOF
 
 	ucidef_set_interface_wan "eth0.2"
@@ -32,17 +34,11 @@ ramips_setup_interfaces()
 
 	case $board in
 	gb-pc1)
-		ucidef_set_interfaces_lan_wan "eth0.1" "eth0.2"
-		ucidef_add_switch "switch0" "1" "1"
-		ucidef_add_switch_vlan "switch0" "1" "0 1 2 3 6t"
-		ucidef_add_switch_vlan "switch0" "2" "4 6t"
+		ramips_setup_gnubee_interfaces
 		;;
 
         gb-pc2)
-                ucidef_set_interfaces_lan_wan "eth0.1" "eth0.2"
-                ucidef_add_switch "switch0" "1" "1"
-                ucidef_add_switch_vlan "switch0" "1" "0 1 2 3 6t"
-                ucidef_add_switch_vlan "switch0" "2" "4 6t"
+		ramips_setup_gnubee_interfaces
                 ;;
 
 	gnubee)
@@ -50,7 +46,6 @@ ramips_setup_interfaces()
 		;;
 	*)
 		ucidef_set_interfaces_lan_wan "eth0.1" "eth0.2"
-
 		;;
 	esac
 }
@@ -60,6 +55,7 @@ ramips_setup_macs()
 	local board="$1"
 	local lan_mac=""
 	local wan_mac=""
+	local eth1_mac=""
 
 	case $board in
 	br-6475nd)
@@ -122,6 +118,15 @@ ramips_setup_macs()
 		lan_mac=$(eth_mac r lan)
                 wan_mac=$(eth_mac r wan)
                 ;;
+        gb-pc1)
+                lan_mac=$(eth_mac r lan)
+                wan_mac=$(macaddr_add "$lan_mac" 1)
+                ;;
+        gb-pc2)
+                lan_mac=$(eth_mac r lan)
+                wan_mac=$(macaddr_add "$lan_mac" 1)
+                eth1_mac=$(macaddr_add "$lan_mac" 2)
+                ;;
 
 	*)
 		lan_mac=$(cat /sys/class/net/eth0/address)
@@ -132,6 +137,7 @@ ramips_setup_macs()
 
 	[ -n "$lan_mac" ] && ucidef_set_interface_macaddr lan $lan_mac
 	[ -n "$wan_mac" ] && ucidef_set_interface_macaddr wan $wan_mac
+        [ -n "$eth1_mac" ] && ucidef_set_interface_macaddr eth1 $eth1_mac
 }
 
 [ -e /etc/config/network ] && exit 0
