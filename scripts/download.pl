@@ -103,7 +103,12 @@ sub download
 			return;
 		}
 	} else {
-		open WGET, "wget -t5 --timeout=20 --no-check-certificate $options -O- '$mirror/$filename' |" or die "Cannot launch wget.\n";
+		my $fname = $filename;
+		if ($mirror =~ /mqmaker.linux/ && $fname =~ /^linux-(.*)$/) {
+			$fname = "$1";
+		}
+		print STDERR "mirror=$mirror and fname=$fname\n";
+		open WGET, "wget -t5 --timeout=20 --no-check-certificate $options -O- '$mirror/$fname' |" or die "Cannot launch wget.\n";
 		open MD5SUM, "| $md5cmd > '$target/$filename.md5sum'" or die "Cannot launch md5sum.\n";
 		open OUTPUT, "> $target/$filename.dl" or die "Cannot create file $target/$filename.dl: $!\n";
 		my $buffer;
