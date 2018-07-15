@@ -31,10 +31,10 @@ SOUNDCORE_FILES ?= \
 	$(LINUX_DIR)/sound/core/oss/snd-pcm-oss.ko
 
 ifeq ($(strip $(call CompareKernelPatchVer,$(KERNEL_PATCHVER),ge,3.3.0)),1)
-SOUNDCORE_LOAD += \
+__SOUNDCORE_LOAD += \
 	snd-compress
 
-SOUNDCORE_FILES += \
+__SOUNDCORE_FILES += \
 	$(LINUX_DIR)/sound/core/snd-compress.ko
 endif
 

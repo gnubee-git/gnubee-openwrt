@@ -1,7 +1,13 @@
 #!/bin/bash
 # Pack external modules for Debian rootfs
+#
 
-LINUX=4.4
+# Default to 4.4 and allow it to be overridden in the environment
+LINUX=${LINUX:-4.4}
+
+echo $LINUX
+exit 0
+
 VERSION=$(echo ${LINUX}$(grep "^LINUX_VERSION-${LINUX}" include/kernel-version.mk | cut -d' ' -f 3))
 
 ARCH=$(sed -n 's/^CONFIG_ARCH=//p' .config | sed 's/^"\|"$//g')
